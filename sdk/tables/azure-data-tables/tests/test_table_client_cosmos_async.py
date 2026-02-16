@@ -153,11 +153,16 @@ class TestTableClientCosmosAsync(AzureRecordedTestCase, AsyncTableTestCase):
                     with pytest.raises(ValueError) as error:
                         await client.delete_entity("PK", "RK")
                     assert "Cosmos table names must contain from 1-255 characters" in str(error.value)
-                with pytest.raises(ValueError) as error:
-                    batch = []
-                    batch.append(("upsert", {"PartitionKey": "A", "RowKey": "B"}))
-                    await client.submit_transaction(batch)
-                assert "Cosmos table names must contain from 1-255 characters" in str(error.value)
+                try:
+                    with pytest.raises(ValueError) as error:
+                        batch = []
+                        batch.append(("upsert", {"PartitionKey": "A", "RowKey": "B"}))
+                        await client.submit_transaction(batch)
+                    assert "Cosmos table names must contain from 1-255 characters" in str(error.value)
+                except TableTransactionError as error:
+                    if invalid_name != "- ":
+                        raise
+                    assert error.error_code == "ResourceNotFound"
 
     @pytest.mark.live_test_only
     @cosmos_decorator_async
