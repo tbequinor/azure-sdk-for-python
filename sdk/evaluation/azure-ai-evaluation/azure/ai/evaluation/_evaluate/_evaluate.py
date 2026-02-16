@@ -2353,6 +2353,24 @@ def _convert_single_row_to_aoai_format(
     # Convert criteria groups to results
     run_output_results = []
     top_sample = {}
+    if input_data and len(input_data) > 0 and "sample.generated_sample_data" in input_data:
+        top_sample_str = input_data["sample.generated_sample_data"]
+        if top_sample_str and isinstance(top_sample_str, str):
+            try:
+                top_sample_dict = json.loads(top_sample_str)
+                if top_sample_dict and isinstance(top_sample_dict, dict):
+                    top_sample = top_sample_dict
+                    input_data.pop("sample.generated_sample_data", None)
+                    if "sample.output_status" in input_data:
+                        input_data.pop("sample.output_status", None)
+                    if "sample.output_status.status" in input_data:
+                        input_data.pop("sample.output_status.status", None)
+                    if "sample.output_status.message" in input_data:
+                        input_data.pop("sample.output_status.message", None)
+            except Exception as e:
+                logger.error(
+                    f"Failed to parse generated_sample_data as JSON for row {row_idx}, eval_id: {eval_id}, eval_run_id: {eval_run_id}. Storing as string. Error: {e}"
+                )
 
     # Process each criteria group to extract metric results of output items.
     for criteria_name, metrics in criteria_groups.items():
@@ -2360,8 +2378,6 @@ def _convert_single_row_to_aoai_format(
             criteria_name, metrics, testing_criteria_metadata, logger, eval_id, eval_run_id
         )
         run_output_results.extend(criteria_results)
-        if sample:
-            top_sample = sample
 
     # Add error summaries if needed
     _add_error_summaries(run_output_results, eval_run_summary, testing_criteria_metadata)
@@ -2695,19 +2711,25 @@ def _update_metric_value(
             logger.warning(f"Failed to parse _sample_output value as JSON: {e}")
     elif metric_key.endswith("_total_tokens"):
         _ensure_usage_dict(metric_dict)
-        metric_dict["sample"]["usage"]["total_tokens"] = None if _is_none_or_nan(metric_value) else metric_value
+        metric_dict["sample"]["usage"]["total_tokens"] = (
+            None if _is_none_or_nan(metric_value) else int(float(metric_value))
+        )
         result_name = "sample"
         result_name_child_level = "usage"
         result_name_nested_child_level = "total_tokens"
     elif metric_key.endswith("_prompt_tokens"):
         _ensure_usage_dict(metric_dict)
-        metric_dict["sample"]["usage"]["prompt_tokens"] = None if _is_none_or_nan(metric_value) else metric_value
+        metric_dict["sample"]["usage"]["prompt_tokens"] = (
+            None if _is_none_or_nan(metric_value) else int(float(metric_value))
+        )
         result_name = "sample"
         result_name_child_level = "usage"
         result_name_nested_child_level = "prompt_tokens"
     elif metric_key.endswith("_completion_tokens"):
         _ensure_usage_dict(metric_dict)
-        metric_dict["sample"]["usage"]["completion_tokens"] = None if _is_none_or_nan(metric_value) else metric_value
+        metric_dict["sample"]["usage"]["completion_tokens"] = (
+            None if _is_none_or_nan(metric_value) else int(float(metric_value))
+        )
         result_name = "sample"
         result_name_child_level = "usage"
         result_name_nested_child_level = "completion_tokens"
