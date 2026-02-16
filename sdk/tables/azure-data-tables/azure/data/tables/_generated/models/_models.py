@@ -13,7 +13,7 @@ from typing import Any, Mapping, Optional, TYPE_CHECKING, Union, overload
 from .._utils.model_base import Model as _Model, rest_field
 
 if TYPE_CHECKING:
-    from .. import models as _models
+    from .. import _types, models as _models
 
 
 class AccessPolicy(_Model):
@@ -455,12 +455,14 @@ class TableEntityQueryResponse(_Model):
     :ivar odata_metadata: The metadata response of the table.
     :vartype odata_metadata: str
     :ivar value: List of table entities.
-    :vartype value: list[dict[str, any]]
+    :vartype value: list[dict[str, str or int or bool]]
     """
 
     odata_metadata: Optional[str] = rest_field(name="odata.metadata", visibility=["read", "query"])
     """The metadata response of the table."""
-    value: Optional[list[dict[str, Any]]] = rest_field(visibility=["read", "create", "update", "delete", "query"])
+    value: Optional[list[dict[str, "_types.EntityValueType"]]] = rest_field(
+        visibility=["read", "create", "update", "delete", "query"]
+    )
     """List of table entities."""
 
     @overload
@@ -468,7 +470,7 @@ class TableEntityQueryResponse(_Model):
         self,
         *,
         odata_metadata: Optional[str] = None,
-        value: Optional[list[dict[str, Any]]] = None,
+        value: Optional[list[dict[str, "_types.EntityValueType"]]] = None,
     ) -> None: ...
 
     @overload

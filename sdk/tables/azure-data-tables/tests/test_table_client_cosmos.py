@@ -142,14 +142,10 @@ class TestTableClientCosmos(AzureRecordedTestCase, TableTestCase):
                 # Raises ResourceNotFound for tablename == "- "
                 if invalid_name != "- ":
                     raise
-            try:
+            if invalid_name != "- ":  # Table name "- " raises 404, which will be swallowed by the client.
                 with pytest.raises(ValueError) as error:
                     client.upsert_entity({"PartitionKey": "foo", "RowKey": "foo"})
                 assert "Cosmos table names must contain from 1-255 characters" in str(error.value)
-            except ResourceNotFoundError:
-                # Raises ResourceNotFound for tablename == "- "
-                if invalid_name != "- ":
-                    raise
             try:
                 with pytest.raises(ValueError) as error:
                     client.delete_entity("PK", "RK")

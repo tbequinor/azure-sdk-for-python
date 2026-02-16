@@ -9,7 +9,7 @@
 from collections.abc import MutableMapping
 from io import IOBase
 import json
-from typing import Any, Callable, IO, Literal, Optional, TypeVar, Union, overload
+from typing import Any, Callable, IO, Literal, Optional, TYPE_CHECKING, TypeVar, Union, overload
 import urllib.parse
 
 from azure.core import AsyncPipelineClient, MatchConditions
@@ -59,6 +59,8 @@ from ...operations._operations import (
 )
 from .._configuration import TablesClientConfiguration
 
+if TYPE_CHECKING:
+    from ... import _types
 JSON = MutableMapping[str, Any]
 T = TypeVar("T")
 ClsType = Optional[Callable[[PipelineResponse[HttpRequest, AsyncHttpResponse], T, dict[str, Any]], Any]]
@@ -579,7 +581,7 @@ class TableOperations:
         select: Optional[str] = None,
         filter: Optional[str] = None,
         **kwargs: Any
-    ) -> dict[str, Any]:
+    ) -> dict[str, "_types.EntityValueType"]:
         """Retrieve a single entity.
 
         :param table: The name of the table. Required.
@@ -599,8 +601,8 @@ class TableOperations:
         :paramtype select: str
         :keyword filter: OData filter expression. Default value is None.
         :paramtype filter: str
-        :return: dict mapping str to any
-        :rtype: dict[str, any]
+        :return: dict mapping str to str or int or bool
+        :rtype: dict[str, str or int or bool]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -617,7 +619,7 @@ class TableOperations:
         data_service_version: Literal["3.0"] = kwargs.pop(
             "data_service_version", _headers.pop("DataServiceVersion", "3.0")
         )
-        cls: ClsType[dict[str, Any]] = kwargs.pop("cls", None)
+        cls: ClsType[dict[str, "_types.EntityValueType"]] = kwargs.pop("cls", None)
 
         _request = build_table_query_entity_with_partition_and_row_key_request(
             table=table,
@@ -676,7 +678,7 @@ class TableOperations:
         if _stream:
             deserialized = response.iter_bytes()
         else:
-            deserialized = _deserialize(dict[str, Any], response.json())
+            deserialized = _deserialize(dict[str, "_types.EntityValueType"], response.json())
 
         if cls:
             return cls(pipeline_response, deserialized, response_headers)  # type: ignore
@@ -689,7 +691,7 @@ class TableOperations:
         table: str,
         partition_key: str,
         row_key: str,
-        table_entity_properties: Optional[dict[str, Any]] = None,
+        table_entity_properties: Optional[dict[str, "_types.EntityValueType"]] = None,
         *,
         timeout: Optional[int] = None,
         content_type: str = "application/json",
@@ -706,7 +708,7 @@ class TableOperations:
         :param row_key: The row key of the entity. Required.
         :type row_key: str
         :param table_entity_properties: The properties for the table entity. Default value is None.
-        :type table_entity_properties: dict[str, any]
+        :type table_entity_properties: dict[str, str or int or bool]
         :keyword timeout: The timeout parameter is expressed in seconds. Default value is None.
         :paramtype timeout: int
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -767,7 +769,7 @@ class TableOperations:
         table: str,
         partition_key: str,
         row_key: str,
-        table_entity_properties: Optional[Union[dict[str, Any], IO[bytes]]] = None,
+        table_entity_properties: Optional[Union[dict[str, "_types.EntityValueType"], IO[bytes]]] = None,
         *,
         timeout: Optional[int] = None,
         etag: Optional[str] = None,
@@ -782,9 +784,9 @@ class TableOperations:
         :type partition_key: str
         :param row_key: The row key of the entity. Required.
         :type row_key: str
-        :param table_entity_properties: The properties for the table entity. Is either a {str: Any}
-         type or a IO[bytes] type. Default value is None.
-        :type table_entity_properties: dict[str, any] or IO[bytes]
+        :param table_entity_properties: The properties for the table entity. Is either a {str:
+         "_types.EntityValueType"} type or a IO[bytes] type. Default value is None.
+        :type table_entity_properties: dict[str, str or int or bool] or IO[bytes]
         :keyword timeout: The timeout parameter is expressed in seconds. Default value is None.
         :paramtype timeout: int
         :keyword etag: check if resource is changed. Set None to skip checking etag. Default value is
@@ -882,7 +884,7 @@ class TableOperations:
         table: str,
         partition_key: str,
         row_key: str,
-        table_entity_properties: Optional[dict[str, Any]] = None,
+        table_entity_properties: Optional[dict[str, "_types.EntityValueType"]] = None,
         *,
         timeout: Optional[int] = None,
         content_type: str = "application/json",
@@ -899,7 +901,7 @@ class TableOperations:
         :param row_key: The row key of the entity. Required.
         :type row_key: str
         :param table_entity_properties: The properties for the table entity. Default value is None.
-        :type table_entity_properties: dict[str, any]
+        :type table_entity_properties: dict[str, str or int or bool]
         :keyword timeout: The timeout parameter is expressed in seconds. Default value is None.
         :paramtype timeout: int
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
@@ -960,7 +962,7 @@ class TableOperations:
         table: str,
         partition_key: str,
         row_key: str,
-        table_entity_properties: Optional[Union[dict[str, Any], IO[bytes]]] = None,
+        table_entity_properties: Optional[Union[dict[str, "_types.EntityValueType"], IO[bytes]]] = None,
         *,
         timeout: Optional[int] = None,
         etag: Optional[str] = None,
@@ -975,9 +977,9 @@ class TableOperations:
         :type partition_key: str
         :param row_key: The row key of the entity. Required.
         :type row_key: str
-        :param table_entity_properties: The properties for the table entity. Is either a {str: Any}
-         type or a IO[bytes] type. Default value is None.
-        :type table_entity_properties: dict[str, any] or IO[bytes]
+        :param table_entity_properties: The properties for the table entity. Is either a {str:
+         "_types.EntityValueType"} type or a IO[bytes] type. Default value is None.
+        :type table_entity_properties: dict[str, str or int or bool] or IO[bytes]
         :keyword timeout: The timeout parameter is expressed in seconds. Default value is None.
         :paramtype timeout: int
         :keyword etag: check if resource is changed. Set None to skip checking etag. Default value is
@@ -1168,20 +1170,20 @@ class TableOperations:
     async def insert_entity(
         self,
         table: str,
-        table_entity_properties: Optional[dict[str, Any]] = None,
+        table_entity_properties: Optional[dict[str, "_types.EntityValueType"]] = None,
         *,
         content_type: str = "application/json",
         timeout: Optional[int] = None,
         format: Optional[Union[str, _models.OdataMetadataFormat]] = None,
         prefer: Optional[Union[str, _models.ResponseFormat]] = None,
         **kwargs: Any
-    ) -> Optional[dict[str, Any]]:
+    ) -> Optional[dict[str, "_types.EntityValueType"]]:
         """Insert entity in a table.
 
         :param table: The name of the table. Required.
         :type table: str
         :param table_entity_properties: The entity properties to insert. Default value is None.
-        :type table_entity_properties: dict[str, any]
+        :type table_entity_properties: dict[str, str or int or bool]
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
@@ -1195,8 +1197,8 @@ class TableOperations:
          payload. Possible values are return-no-content and return-content. Known values are:
          "return-no-content" and "return-content". Default value is None.
         :paramtype prefer: str or ~azure.data.tables._generated.models.ResponseFormat
-        :return: dict mapping str to any or None
-        :rtype: dict[str, any] or None
+        :return: dict mapping str to str or int or bool or None
+        :rtype: dict[str, str or int or bool] or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1211,7 +1213,7 @@ class TableOperations:
         format: Optional[Union[str, _models.OdataMetadataFormat]] = None,
         prefer: Optional[Union[str, _models.ResponseFormat]] = None,
         **kwargs: Any
-    ) -> Optional[dict[str, Any]]:
+    ) -> Optional[dict[str, "_types.EntityValueType"]]:
         """Insert entity in a table.
 
         :param table: The name of the table. Required.
@@ -1231,8 +1233,8 @@ class TableOperations:
          payload. Possible values are return-no-content and return-content. Known values are:
          "return-no-content" and "return-content". Default value is None.
         :paramtype prefer: str or ~azure.data.tables._generated.models.ResponseFormat
-        :return: dict mapping str to any or None
-        :rtype: dict[str, any] or None
+        :return: dict mapping str to str or int or bool or None
+        :rtype: dict[str, str or int or bool] or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
 
@@ -1240,20 +1242,20 @@ class TableOperations:
     async def insert_entity(
         self,
         table: str,
-        table_entity_properties: Optional[Union[dict[str, Any], IO[bytes]]] = None,
+        table_entity_properties: Optional[Union[dict[str, "_types.EntityValueType"], IO[bytes]]] = None,
         *,
         timeout: Optional[int] = None,
         format: Optional[Union[str, _models.OdataMetadataFormat]] = None,
         prefer: Optional[Union[str, _models.ResponseFormat]] = None,
         **kwargs: Any
-    ) -> Optional[dict[str, Any]]:
+    ) -> Optional[dict[str, "_types.EntityValueType"]]:
         """Insert entity in a table.
 
         :param table: The name of the table. Required.
         :type table: str
-        :param table_entity_properties: The entity properties to insert. Is either a {str: Any} type or
-         a IO[bytes] type. Default value is None.
-        :type table_entity_properties: dict[str, any] or IO[bytes]
+        :param table_entity_properties: The entity properties to insert. Is either a {str:
+         "_types.EntityValueType"} type or a IO[bytes] type. Default value is None.
+        :type table_entity_properties: dict[str, str or int or bool] or IO[bytes]
         :keyword timeout: The timeout parameter is expressed in seconds. Default value is None.
         :paramtype timeout: int
         :keyword format: Specifies the metadata format for the response. Known values are:
@@ -1264,8 +1266,8 @@ class TableOperations:
          payload. Possible values are return-no-content and return-content. Known values are:
          "return-no-content" and "return-content". Default value is None.
         :paramtype prefer: str or ~azure.data.tables._generated.models.ResponseFormat
-        :return: dict mapping str to any or None
-        :rtype: dict[str, any] or None
+        :return: dict mapping str to str or int or bool or None
+        :rtype: dict[str, str or int or bool] or None
         :raises ~azure.core.exceptions.HttpResponseError:
         """
         error_map: MutableMapping = {
@@ -1284,7 +1286,7 @@ class TableOperations:
         )
         content_type: Optional[str] = kwargs.pop("content_type", _headers.pop("Content-Type", None))
         content_type = content_type if table_entity_properties else None
-        cls: ClsType[Optional[dict[str, Any]]] = kwargs.pop("cls", None)
+        cls: ClsType[Optional[dict[str, "_types.EntityValueType"]]] = kwargs.pop("cls", None)
 
         content_type = content_type or "application/json" if table_entity_properties else None
         _content = None
@@ -1351,7 +1353,7 @@ class TableOperations:
             if _stream:
                 deserialized = response.iter_bytes()
             else:
-                deserialized = _deserialize(dict[str, Any], response.json())
+                deserialized = _deserialize(dict[str, "_types.EntityValueType"], response.json())
 
         if response.status_code == 204:
             response_headers["Preference-Applied"] = self._deserialize(

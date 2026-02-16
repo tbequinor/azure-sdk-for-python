@@ -981,20 +981,20 @@ def _deserialize_with_callable(
                 return float(value.text) if value.text else None
             if deserializer is bool:
                 return value.text == "true" if value.text else None
-            if deserializer in _DESERIALIZE_MAPPING.values() or deserializer in _DESERIALIZE_MAPPING_WITHFORMAT.values():
-                return typing.cast(typing.Callable[[typing.Any], typing.Any], deserializer)(value.text) if value.text else None
+            if callable(deserializer) and deserializer in _DESERIALIZE_MAPPING.values():
+                return deserializer(value.text)
+            if callable(deserializer) and deserializer in _DESERIALIZE_MAPPING_WITHFORMAT.values():
+                return deserializer(value.text)
         if deserializer is None:
             return value
         if deserializer in [int, float, bool]:
             return deserializer(value)
         if isinstance(deserializer, CaseInsensitiveEnumMeta):
-            if isinstance(value, ET.Element):
-                value = value.text
             try:
-                return deserializer(value)
+                return deserializer(value.text if isinstance(value, ET.Element) else value)
             except ValueError:
                 # for unknown value, return raw value
-                return value
+                return value.text if isinstance(value, ET.Element) else value
         if isinstance(deserializer, type) and issubclass(deserializer, Model):
             return deserializer._deserialize(value, [])
         return typing.cast(typing.Callable[[typing.Any], typing.Any], deserializer)(value)
