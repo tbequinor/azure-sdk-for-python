@@ -153,7 +153,7 @@ class SharedKeyCredentialPolicy(SansIOHTTPPolicy):
     def _get_canonicalized_resource_query(self, request):
         for name, value in request.query.items():
             if name == "comp":
-                return "/?comp=" + value
+                return "?comp=" + value
         return ""
 
 
