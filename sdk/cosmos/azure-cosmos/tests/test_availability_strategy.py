@@ -8,7 +8,7 @@ import time
 import unittest
 import uuid
 from concurrent.futures import ThreadPoolExecutor
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
 import pytest
 from azure.core.exceptions import ServiceResponseError
