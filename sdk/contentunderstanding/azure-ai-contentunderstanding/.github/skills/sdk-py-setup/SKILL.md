@@ -84,18 +84,18 @@ which python  # Linux/macOS
 
 > **[ASK USER] Installation mode:**
 > Ask the user: "How would you like to install the SDK?"
-> - **Option A: Local editable install (recommended for development)** — Installs from the local source code. Changes you make are reflected immediately without reinstalling.
-> - **Option B: PyPI install** — Installs the latest published version from PyPI. Best if you just want to run samples without modifying the SDK.
+> - **Option A: PyPI install (recommended)** — Installs the latest published version from PyPI. Best for running samples and using the SDK.
+> - **Option B: Local editable install (for development)** — Installs from the local source code. Changes you make are reflected immediately without reinstalling.
 
-**Option A: Local editable install (recommended for development):**
+**Option A: PyPI install (recommended):**
 ```bash
-pip install -e .
+pip install azure-ai-contentunderstanding
 pip install -r dev_requirements.txt
 ```
 
-**Option B: PyPI install:**
+**Option B: Local editable install (for development):**
 ```bash
-pip install azure-ai-contentunderstanding
+pip install -e .
 pip install -r dev_requirements.txt
 ```
 

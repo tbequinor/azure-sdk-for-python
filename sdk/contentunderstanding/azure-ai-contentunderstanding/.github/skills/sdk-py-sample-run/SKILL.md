@@ -137,7 +137,19 @@ source .venv/bin/activate  # Linux/macOS
 > - Sync (default) -- Runs in `samples/`
 > - Async -- Runs in `samples/async_samples/` with `_async` suffix
 
-**Using the script (recommended):**
+**Run manually (recommended):**
+
+```bash
+# For sync samples
+cd samples
+python sample_analyze_url.py
+
+# For async samples
+cd samples/async_samples
+python sample_analyze_url_async.py
+```
+
+**Or use the script:**
 
 ```bash
 .github/skills/sdk-py-sample-run/scripts/run_sample.sh <sample_name>
@@ -154,18 +166,6 @@ source .venv/bin/activate  # Linux/macOS
 
 # With .py extension (also works)
 .github/skills/sdk-py-sample-run/scripts/run_sample.sh sample_analyze_invoice.py
-```
-
-**Or run manually:**
-
-```bash
-# For sync samples
-cd samples
-python sample_analyze_url.py
-
-# For async samples
-cd samples/async_samples
-python sample_analyze_url_async.py
 ```
 
 > **[ASK USER] Sample result:**
