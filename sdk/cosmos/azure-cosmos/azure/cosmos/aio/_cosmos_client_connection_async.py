@@ -118,7 +118,7 @@ class CosmosClientConnection:  # pylint: disable=too-many-public-methods,too-man
             auth: CredentialDict,
             connection_policy: Optional[ConnectionPolicy] = None,
             consistency_level: Optional[str] = None,
-            availability_strategy: Optional[dict[str, Any]] = None,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = None,
             availability_strategy_max_concurrency: Optional[int] = None,
             **kwargs: Any
     ) -> None:

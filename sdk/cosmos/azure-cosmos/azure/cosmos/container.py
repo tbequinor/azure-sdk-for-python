@@ -225,7 +225,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         max_integrated_cache_staleness_in_ms: Optional[int] = None,
         priority: Optional[Literal["High", "Low"]] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> CosmosDict:
@@ -253,14 +253,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_steps_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :returns: A CosmosDict representing the item to be retrieved.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The given item couldn't be retrieved.
         :rtype: ~azure.cosmos.CosmosDict[str, Any]
@@ -317,7 +314,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             excluded_locations: Optional[list[str]] = None,
             priority: Optional[Literal["High", "Low"]] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> CosmosList:
         """Reads multiple items from the container.
@@ -340,14 +337,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             request. Once the user has reached their provisioned throughput, low priority requests are throttled
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword int throughput_bucket: The desired throughput bucket for the client
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The read-many operation failed.
         :returns: A CosmosList containing the retrieved items. Items that were not found are omitted from the list.
             The returned items have no guaranteed ordering.
@@ -397,7 +391,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         max_integrated_cache_staleness_in_ms: Optional[int] = None,
         priority: Optional[Literal["High", "Low"]] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
@@ -419,14 +413,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :returns: An Iterable of items (dicts).
         :rtype: Iterable[dict[str, Any]]
         """
@@ -473,7 +464,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             partition_key: PartitionKeyType,
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
@@ -505,14 +496,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An Iterable of items (dicts).
@@ -529,7 +517,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             start_time: Optional[Union[datetime, Literal["Now", "Beginning"]]] = None,
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
@@ -557,14 +545,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An Iterable of items (dicts).
@@ -579,7 +564,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             continuation: str,
             max_item_count: Optional[int] = None,
             priority: Optional[Literal["High", "Low"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
@@ -596,14 +581,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An Iterable of items (dicts).
@@ -619,7 +601,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             start_time: Optional[Union[datetime, Literal["Now", "Beginning"]]] = None,
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
@@ -646,14 +628,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An Iterable of items (dicts).
@@ -696,14 +675,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             in this list are specified as the names of the azure Cosmos locations like, 'West US', 'East US' and so on.
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :param Any args: args
@@ -774,7 +750,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             session_token: Optional[str] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
         """Return all results matching the given `query`.
@@ -821,14 +797,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :returns: An Iterable of items (dicts).
         :rtype: ItemPaged[dict[str, Any]]
 
@@ -869,7 +842,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             session_token: Optional[str] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> ItemPaged[dict[str, Any]]:
         """Return all results matching the given `query`.
@@ -913,14 +886,11 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
-        :keyword dict[str, Any] availability_strategy:
-            The threshold-based availability strategy configuration for cross-region hedging.
-            This dictionary accepts the following keys: ``threshold_ms`` (int) is the initial wait time
-            in milliseconds before sending the first hedged request to an alternate region, and
-            ``threshold_step_ms`` (int) is the fixed wait time interval in milliseconds between subsequent
-            hedged requests. If not provided, the client's default strategy will be used.
-            For more information, see:
-            https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+        :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled), or a dict with keys
+            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's default strategy.
+        :paramtype availability_strategy: Union[bool, dict[str, Any]]
         :returns: An Iterable of items (dicts).
         :rtype: ItemPaged[dict[str, Any]]
 
@@ -1158,7 +1128,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> CosmosDict:
@@ -1266,7 +1236,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> CosmosDict:
@@ -1371,7 +1341,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> CosmosDict:
@@ -1484,7 +1454,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
         **kwargs: Any
     ) -> CosmosDict:
@@ -1588,7 +1558,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         priority: Optional[Literal["High", "Low"]] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], list[dict[str, Any]]], None]] = None,
         **kwargs: Any
     ) -> CosmosList:
@@ -1683,7 +1653,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         priority: Optional[Literal["High", "Low"]] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         response_hook: Optional[Callable[[Mapping[str, str], None], None]] = None,
         **kwargs: Any
     ) -> None:

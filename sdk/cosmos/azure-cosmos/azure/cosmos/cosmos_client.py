@@ -203,20 +203,10 @@ class CosmosClient:  # pylint: disable=client-accepts-api-version-keyword
         response payloads on write operations for items.
     :keyword int throughput_bucket: The desired throughput bucket for the client
     :keyword str user_agent_suffix: Allows user agent suffix to be specified when creating client
-    :keyword dict[str, Any] availability_strategy:
-        The threshold-based availability strategy configuration for cross-region hedging.
-        This dictionary accepts the following keys:
-
-        - ``threshold_ms`` (int): Initial wait time in milliseconds before sending the first hedged request
-          to an alternate region.
-        - ``threshold_steps_ms`` (int): Fixed wait time interval in milliseconds between subsequent hedged requests.
-
-        For example, with ``threshold_ms=100`` and ``threshold_steps_ms=50``:
-        At t=0ms the original request is sent to the primary region, at t=100ms a second request is sent
-        to the next region, at t=150ms a third request is sent, and so on.
-
-        For more information, see the README:
-        https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/cosmos/azure-cosmos/README.md#cross-region-hedging-availability-strategy
+    :keyword availability_strategy: The availability strategy configuration for cross-region hedging.
+        Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+        False (disable hedging), or a dict with keys ``threshold_ms`` and ``threshold_steps_ms``.
+    :paramtype availability_strategy: Union[bool, dict[str, Any]]
     :keyword ~concurrent.futures.thread.ThreadPoolExecutor availability_strategy_executor:
         Optional ThreadPoolExecutor for handling concurrent operations.
 

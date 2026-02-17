@@ -228,7 +228,7 @@ class ContainerProxy:
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosDict:
         """Create an item in the container.
@@ -328,7 +328,7 @@ class ContainerProxy:
         max_integrated_cache_staleness_in_ms: Optional[int] = None,
         priority: Optional[Literal["High", "Low"]] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosDict:
         """Get the item identified by `item`.
@@ -411,7 +411,7 @@ class ContainerProxy:
         max_integrated_cache_staleness_in_ms: Optional[int] = None,
         priority: Optional[Literal["High", "Low"]] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """List all the items in the container.
@@ -484,7 +484,7 @@ class ContainerProxy:
             excluded_locations: Optional[list[str]] = None,
             priority: Optional[Literal["High", "Low"]] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> CosmosList:
         """Reads multiple items from the container.
@@ -566,7 +566,7 @@ class ContainerProxy:
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             session_token: Optional[str] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """Return all results matching the given `query`.
@@ -657,7 +657,7 @@ class ContainerProxy:
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             session_token: Optional[str] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """Return all results matching the given `query`.
@@ -744,7 +744,7 @@ class ContainerProxy:
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
             session_token: Optional[str] = None,
             throughput_bucket: Optional[int] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """Return all results matching the given `query`.
@@ -964,7 +964,7 @@ class ContainerProxy:
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
             response_hook: Optional[Callable[[Mapping[str, str], dict[str, Any]], None]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """Get a sorted list of items that were changed, in the order in which they were modified.
@@ -1019,7 +1019,7 @@ class ContainerProxy:
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
             response_hook: Optional[Callable[[Mapping[str, Any], dict[str, Any]], None]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
         """Get a sorted list of items that were changed, in the order in which they were modified.
@@ -1067,7 +1067,7 @@ class ContainerProxy:
             continuation: str,
             max_item_count: Optional[int] = None,
             priority: Optional[Literal["High", "Low"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, Any], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
@@ -1108,7 +1108,7 @@ class ContainerProxy:
             start_time: Optional[Union[datetime, Literal["Now", "Beginning"]]] = None,
             priority: Optional[Literal["High", "Low"]] = None,
             mode: Optional[Literal["LatestVersion", "AllVersionsAndDeletes"]] = None,
-            availability_strategy: Optional[dict[str, Any]] = _Unset,
+            availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
             response_hook: Optional[Callable[[Mapping[str, Any], dict[str, Any]], None]] = None,
             **kwargs: Any
     ) -> AsyncItemPaged[dict[str, Any]]:
@@ -1256,7 +1256,7 @@ class ContainerProxy:
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosDict:
         """Insert or update the specified item.
@@ -1397,7 +1397,7 @@ class ContainerProxy:
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosDict:
         """Replaces the specified item if it exists in the container.
@@ -1495,7 +1495,7 @@ class ContainerProxy:
         no_response: Optional[bool] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosDict:
         """ Patches the specified item with the provided operations if it
@@ -1597,7 +1597,7 @@ class ContainerProxy:
         priority: Optional[Literal["High", "Low"]] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> None:
         """Delete the specified item from the container.
@@ -1956,7 +1956,7 @@ class ContainerProxy:
         priority: Optional[Literal["High", "Low"]] = None,
         retry_write: Optional[int] = None,
         throughput_bucket: Optional[int] = None,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         **kwargs: Any
     ) -> CosmosList:
         """ Executes the transactional batch for the specified partition key.

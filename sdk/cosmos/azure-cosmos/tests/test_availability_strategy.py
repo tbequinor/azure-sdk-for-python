@@ -73,7 +73,7 @@ def _perform_read_operation(
         created_doc,
         expected_uris,
         excluded_uris,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     excluded_locations = [] if excluded_locations is None else excluded_locations

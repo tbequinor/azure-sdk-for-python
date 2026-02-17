@@ -26,7 +26,7 @@ import threading
 from concurrent.futures.thread import ThreadPoolExecutor
 from typing import Optional, Mapping, Any, Union
 
-from ._availability_strategy_config import CrossRegionHedgingStrategy
+from ._availability_strategy_config import CrossRegionHedgingStrategy, _ExplicitlyDisabled, EXPLICITLY_DISABLED
 from ._constants import _Constants as Constants
 from .documents import _OperationType
 from .http_constants import ResourceType
@@ -117,6 +117,7 @@ class RequestObject(object): # pylint: disable=too-many-instance-attributes
             client_strategy_config: Optional[CrossRegionHedgingStrategy] = None) -> None:
         """Sets the availability strategy config for this request from options.
         If not in options, uses the client's default strategy.
+        If EXPLICITLY_DISABLED is in options, client defaults are NOT used.
 
         :param options: The request options that may contain availabilityStrategy
         :type options: Mapping[str, Any]
@@ -125,9 +126,14 @@ class RequestObject(object): # pylint: disable=too-many-instance-attributes
         :return: None
         """
         # setup availabilityStrategy
-        # First try to get from options
+        # First try to get from options (method-level takes precedence)
         if Constants.Kwargs.AVAILABILITY_STRATEGY in options:
-            self.availability_strategy = options[Constants.Kwargs.AVAILABILITY_STRATEGY]
+            strategy = options[Constants.Kwargs.AVAILABILITY_STRATEGY]
+            # If explicitly disabled (False was passed at method level), don't use any strategy
+            if isinstance(strategy, _ExplicitlyDisabled):
+                self.availability_strategy = None
+            else:
+                self.availability_strategy = strategy
         # If not in options, use client default
         elif client_strategy_config is not None:
             self.availability_strategy = client_strategy_config

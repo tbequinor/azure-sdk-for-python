@@ -952,7 +952,11 @@ Cross region hedging availability strategy improves availability and reduces lat
 
 #### Enabling Cross Region Hedging
 
-You can enable cross region hedging by passing the `availability_strategy` parameter as a dictionary to the `CosmosClient` or per-request. The keys used to configure this behavior are `threshold_ms` (delay before sending a hedged request) and `threshold_steps_ms` (step interval for additional hedged requests). There are no default values for these configurations, so they must be explicitly set in order to enable the availability strategy.
+You can enable cross region hedging by passing the `availability_strategy` parameter to the `CosmosClient` or per-request. This parameter accepts:
+
+- **`True`**: Enable hedging with default values (`threshold_ms=500`, `threshold_steps_ms=100`)
+- **`False`**: Explicitly disable hedging (overrides client-level settings)
+- **`dict`**: Enable hedging with custom values. The keys are `threshold_ms` (delay before sending a hedged request) and `threshold_steps_ms` (step interval for additional hedged requests). Missing keys will use default values.
 
 Hedging will also be implicitly enabled when per-partition automatic failover is enabled, in which case the `CrossRegionHedgingStrategy` applies default values of 500 ms for `threshold_ms` and 100 ms for `threshold_steps_ms` unless you override them via `availability_strategy`.
 
@@ -961,6 +965,14 @@ Hedging will also be implicitly enabled when per-partition automatic failover is
 ```python
 from azure.cosmos import CosmosClient
 
+# Enable with default values
+client = CosmosClient(
+    "<account-uri>",
+    "<account-key>",
+    availability_strategy=True
+)
+
+# Enable with custom values
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
@@ -971,11 +983,18 @@ client = CosmosClient(
 #### Request-level configuration
 
 ```python
-# Override or provide the strategy per request
+# Override or provide the strategy per request with custom values
 container.read_item(
     item="item_id",
     partition_key="pk_value",
     availability_strategy={"threshold_ms": 150, "threshold_steps_ms": 50}
+)
+
+# Enable with default values for a specific request
+container.read_item(
+    item="item_id",
+    partition_key="pk_value",
+    availability_strategy=True
 )
 ```
 
@@ -986,7 +1005,7 @@ container.read_item(
 container.read_item(
     item="item_id",
     partition_key="pk_value",
-    availability_strategy=None
+    availability_strategy=False
 )
 ```
 
@@ -1001,7 +1020,7 @@ executor = ThreadPoolExecutor(max_workers=2)
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
-    availability_strategy={"threshold_ms": 150, "threshold_steps_ms": 50},
+    availability_strategy=True,  # or use a dict for custom values
     availability_strategy_executor=executor
 )
 ```
@@ -1015,7 +1034,7 @@ from azure.cosmos import CosmosClient
 client = CosmosClient(
     "<account-uri>",
     "<account-key>",
-    availability_strategy={"threshold_ms": 150, "threshold_steps_ms": 50},
+    availability_strategy=True,  # or use a dict for custom values
     availability_strategy_max_concurrency=2
 )
 ```

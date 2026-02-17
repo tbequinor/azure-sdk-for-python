@@ -6,7 +6,7 @@ import os
 import re
 import unittest
 import uuid
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
 import pytest
 import pytest_asyncio
@@ -104,7 +104,7 @@ async def _perform_read_operation(
         created_doc,
         expected_uris,
         excluded_uris,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     excluded_locations = [] if excluded_locations is None else excluded_locations
@@ -161,7 +161,7 @@ async def _perform_write_operation(
         expected_uris,
         excluded_uris,
         retry_write=False,
-        availability_strategy: Optional[dict[str, Any]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     """Execute different types of write operations"""

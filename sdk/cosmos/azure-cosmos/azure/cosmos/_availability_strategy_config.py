@@ -21,7 +21,29 @@
 
 """Configuration types for Azure Cosmos DB availability strategies."""
 
-from typing import Optional, Any
+from typing import Optional, Any, Union
+
+# Default values for cross-region hedging strategy
+DEFAULT_THRESHOLD_MS = 500
+DEFAULT_THRESHOLD_STEPS_MS = 100
+
+
+class _ExplicitlyDisabled:
+    """Sentinel class to indicate availability strategy is explicitly disabled.
+
+    This is used to distinguish between "not set" (None/_Unset) and "explicitly disabled" (False).
+    When explicitly disabled, client-level defaults should NOT be used.
+    """
+    _instance: Optional["_ExplicitlyDisabled"] = None
+
+    def __new__(cls) -> "_ExplicitlyDisabled":
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+
+# Singleton instance for explicit disable
+EXPLICITLY_DISABLED: _ExplicitlyDisabled = _ExplicitlyDisabled()
 
 
 class CrossRegionHedgingStrategy:
@@ -37,26 +59,42 @@ class CrossRegionHedgingStrategy:
     """
     def __init__(self, config: Optional[dict[str, Any]] = None) -> None:
         if config is None:
-            self.threshold_ms = 500
-            self.threshold_steps_ms = 100
+            self.threshold_ms = DEFAULT_THRESHOLD_MS
+            self.threshold_steps_ms = DEFAULT_THRESHOLD_STEPS_MS
         else:
-            self.threshold_ms = config.get("threshold_ms", 500)
-            self.threshold_steps_ms = config.get("threshold_steps_ms", 100)
+            self.threshold_ms = config.get("threshold_ms", DEFAULT_THRESHOLD_MS)
+            self.threshold_steps_ms = config.get("threshold_steps_ms", DEFAULT_THRESHOLD_STEPS_MS)
 
         if self.threshold_ms <= 0:
             raise ValueError("threshold_ms must be positive")
         if self.threshold_steps_ms <= 0:
             raise ValueError("threshold_steps_ms must be positive")
 
-def _validate_hedging_strategy(config: Optional[dict[str, Any]]) -> Optional[CrossRegionHedgingStrategy]:
+
+def _validate_hedging_strategy(
+        config: Optional[Union[bool, dict[str, Any]]]
+) -> Optional[Union[CrossRegionHedgingStrategy, _ExplicitlyDisabled]]:
     """Validate and create a CrossRegionHedgingStrategy.
     
-    :param config: Dictionary containing configuration values
-    :type config: Optional[Dict[str, Any]]
-    :returns: Validated configuration object
-    :rtype: Optional[CrossRegionHedgingStrategy]
+    :param config: Configuration for availability strategy. Can be:
+        - None: Returns None (no strategy, uses client default if available)
+        - True: Returns strategy with default values (threshold_ms=500, threshold_steps_ms=100)
+        - False: Returns EXPLICITLY_DISABLED sentinel (overrides client defaults, no hedging)
+        - dict: Returns strategy with values from dict, using defaults for missing keys
+    :type config: Optional[Union[bool, Dict[str, Any]]]
+    :returns: Validated configuration object, EXPLICITLY_DISABLED sentinel, or None
+    :rtype: Optional[Union[CrossRegionHedgingStrategy, _ExplicitlyDisabled]]
     """
     if config is None:
         return None
 
+    if isinstance(config, bool):
+        if config:
+            # True -> use default values
+            return CrossRegionHedgingStrategy()
+        else:
+            # False -> explicitly disabled, returns sentinel to override client defaults
+            return EXPLICITLY_DISABLED
+
+    # dict -> use values from dict
     return CrossRegionHedgingStrategy(config)
