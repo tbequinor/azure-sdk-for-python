@@ -981,14 +981,10 @@ def _deserialize_with_callable(
                 return float(value.text) if value.text else None
             if deserializer is bool:
                 return value.text == "true" if value.text else None
-            if callable(deserializer) and deserializer in _DESERIALIZE_MAPPING.values():
-                if not value.text:
-                    return None
-                return deserializer(value.text)
-            if callable(deserializer) and deserializer in _DESERIALIZE_MAPPING_WITHFORMAT.values():
-                if not value.text:
-                    return None
-                return deserializer(value.text)
+            if deserializer and deserializer in _DESERIALIZE_MAPPING.values():
+                return deserializer(value.text) if value.text else None
+            if deserializer and deserializer in _DESERIALIZE_MAPPING_WITHFORMAT.values():
+                return deserializer(value.text) if value.text else None
         if deserializer is None:
             return value
         if deserializer in [int, float, bool]:
