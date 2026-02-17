@@ -127,6 +127,7 @@ class SharedKeyCredentialPolicy(SansIOHTTPPolicy):
 
     def _add_authorization_header(self, request, string_to_sign):
         try:
+            raise Exception(string_to_sign)
             signature = _sign_string(self._credential.named_key.key, string_to_sign)
             auth_string = "SharedKey " + self._credential.named_key.name + ":" + signature
             request.headers["Authorization"] = auth_string
@@ -153,7 +154,7 @@ class SharedKeyCredentialPolicy(SansIOHTTPPolicy):
     def _get_canonicalized_resource_query(self, request):
         for name, value in request.query.items():
             if name == "comp":
-                return "?comp=" + value
+                return "/?comp=" + value
         return ""
 
 
