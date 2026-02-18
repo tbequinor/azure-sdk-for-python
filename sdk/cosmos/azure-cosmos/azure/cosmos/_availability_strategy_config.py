@@ -74,9 +74,8 @@ def _validate_hedging_strategy(
         if config:
             # True -> use default values
             return CrossRegionHedgingStrategy()
-        else:
-            # False -> explicitly disabled, return False to signal override of client default
-            return False
+        # False -> explicitly disabled, return False to signal override of client default
+        return False
 
     # dict -> use values from dict
     return CrossRegionHedgingStrategy(config)

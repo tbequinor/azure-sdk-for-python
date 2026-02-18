@@ -140,7 +140,7 @@ class CosmosClientConnection:  # pylint: disable=too-many-public-methods,too-man
         """
         self.client_id = str(uuid.uuid4())
         self.url_connection = url_connection
-        self.availability_strategy: Optional[CrossRegionHedgingStrategy] =\
+        self.availability_strategy: Union[CrossRegionHedgingStrategy, bool, None] =\
             _validate_hedging_strategy(availability_strategy)
         self.availability_strategy_max_concurrency: Optional[int] = availability_strategy_max_concurrency
         self.master_key: Optional[str] = None
