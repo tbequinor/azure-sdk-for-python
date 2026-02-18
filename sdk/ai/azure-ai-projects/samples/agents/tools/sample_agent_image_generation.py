@@ -69,7 +69,7 @@ with (
     # [END tool_declaration]
 
     agent = project_client.agents.create_version(
-        agent_name="ahibrahim-image-gen",
+        agent_name="MyAgent",
         definition=PromptAgentDefinition(
             model=os.environ["AZURE_AI_MODEL_DEPLOYMENT_NAME"],
             instructions="Generate images based on user prompts",
