@@ -52,6 +52,7 @@ model_deployment_name = os.environ.get("AZURE_AI_MODEL_DEPLOYMENT_NAME", "")  # 
 # Construct the paths to the data folder and data file used in this sample
 script_dir = os.path.dirname(os.path.abspath(__file__))
 data_folder = os.environ.get("DATA_FOLDER", os.path.join(script_dir, "data_folder"))
+os.makedirs(data_folder, exist_ok=True)
 download_data_file = os.path.join(data_folder, "all_output_items.jsonl")
 
 with (
