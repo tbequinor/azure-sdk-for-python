@@ -206,11 +206,11 @@ class ConversationValidator(ValidatorInterface):
                     target=self.error_target,
                 )
 
-            error = self._validate_dict_field(
-                content_item, "tool_result", f"content items for role '{MessageRole.TOOL.value}'"
-            )
-            if error:
-                return error
+            # error = self._validate_dict_field(
+            #     content_item, "tool_result", f"content items for role '{MessageRole.TOOL.value}'"
+            # )
+            # if error:
+            #     return error
 
         return None
 
