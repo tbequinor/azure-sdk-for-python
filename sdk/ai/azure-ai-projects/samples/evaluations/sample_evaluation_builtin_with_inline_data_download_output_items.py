@@ -158,7 +158,7 @@ with (
 
     while True:
         run = client.evals.runs.retrieve(run_id=eval_run_response.id, eval_id=eval_object.id)
-        if run.status == "completed" or run.status == "failed":
+        if run.status == "completed":
             print(f"Eval Run Report URL: {run.report_url}")
 
             # Fetch all output items using automatic pagination
