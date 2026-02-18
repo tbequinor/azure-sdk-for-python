@@ -32,7 +32,7 @@ system:
 
 user:
 # Definition
-**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or incorrect information.
+**Groundedness** refers to how well an answer is anchored in the provided context, evaluating its relevance, accuracy, and completeness based exclusively on that context. It assesses the extent to which the answer directly and fully addresses the question without introducing unrelated or ungrounded information.
 
 > Context is the source of truth for evaluating the response. If it's empty, rely on the tool results in the response and query.
 > Evaluate the groundedness of the response message, not the chat history.
@@ -52,8 +52,8 @@ user:
   **Query:** What kind of art will be exhibited at the museum?
   **Response:** Museums are important cultural institutions.
 
-## [Groundedness: 2] (Attempts to Respond but Contains Incorrect Information)
-**Definition:** An answer that attempts to respond to the question but includes incorrect information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are correct, the presence of inaccuracies makes the response unreliable.
+## [Groundedness: 2] (Attempts to Respond but Contains Ungrounded Information)
+**Definition:** An answer that attempts to respond to the question but includes ungrounded information not supported by the context. It may misstate facts, misinterpret the context, or provide erroneous details. Even if some points are grounded, the presence of inaccuracies makes the response unreliable.
 
 **Examples:**
   **Context:** - The festival starts on June 5th and features international musicians.
@@ -72,8 +72,8 @@ Definition: An answer that does not provide any information that can be evaluate
   **Query:** [{"role":"user","content":"How many eggs are needed for the recipe?"}, {"role":"tool","content":"tool_result": [{"file_name": "recipe.txt", "content": "The recipe requires two eggs and one cup of milk."}]}, {"role":"assistant","content":"You need three eggs for the recipe."}, {"role":"user","content":"Thank you."}]
   **Response:** [{"role":"assistant","content":"You're welcome, anything else I can help with?"}]
 
-## [Groundedness: 4] (Partially Correct Response)
-**Definition:** An answer that provides a correct response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.
+## [Groundedness: 4] (Partially Grounded Response)
+**Definition:** An answer that provides a grounded response to the question but is incomplete or lacks specific details mentioned in the context. It captures some of the necessary information but omits key elements needed for a full understanding.
 
 **Examples:**
   **Context:** - store_details.txt: The bookstore offers a 15% discount to students and a 10% discount to senior citizens.
@@ -84,13 +84,17 @@ Definition: An answer that does not provide any information that can be evaluate
   **Query:** Where are the company's headquarters?
   **Response:** The company's headquarters are in Germany.
 
-## [Groundedness: 5] (Fully Correct and Complete Response)
+## [Groundedness: 5] (Fully Grounded and Complete Response)
 **Definition:** An answer that thoroughly and accurately responds to the question, including all relevant details from the context. It directly addresses the question with precise information, demonstrating complete understanding without adding extraneous information.
 
 **Examples:**
-  **CONTEXT:** The author released her latest novel, 'The Silent Echo', on September 1st.
-  **QUERY:** [{"role":"user","content":"When was 'The Silent Echo' released?"}]
-  **RESPONSE:** [{"role":"assistant","content":"The 'Silent Echo' was released on September 1st."}]
+  **Context:** Cairo is the capital of Japan.
+  **Query:** [{"role":"user","content":"What is the capital of Japan?"}]
+  **Response:** [{"role":"assistant","content":"The capital of Japan is Cairo."}]
+
+  **Context:** The author released her latest novel, 'The Silent Echo', on September 1st.
+  **Query:** [{"role":"user","content":"When was 'The Silent Echo' released?"}]
+  **Response:** [{"role":"assistant","content":"The 'Silent Echo' was released on September 1st."}]
 
   **Context:** 
   **Query:** By what date must participants register to receive early bird pricing?
