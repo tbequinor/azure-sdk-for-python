@@ -23,7 +23,6 @@ from azure.cosmos.http_constants import ResourceType
 
 #cspell:ignore PPAF, ppaf
 
-_Unset: Any = object()
 class MockHandler(logging.Handler):
     def __init__(self):
         super(MockHandler, self).__init__()
@@ -104,13 +103,13 @@ async def _perform_read_operation(
         created_doc,
         expected_uris,
         excluded_uris,
-        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = None,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     excluded_locations = [] if excluded_locations is None else excluded_locations
 
     """Execute different types of read operations"""
-    if availability_strategy is not _Unset:
+    if availability_strategy is not None:
         kwargs['availability_strategy'] = availability_strategy
 
     if operation == READ:
@@ -161,12 +160,12 @@ async def _perform_write_operation(
         expected_uris,
         excluded_uris,
         retry_write=False,
-        availability_strategy: Optional[Union[bool, dict[str, Any]]] = _Unset,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = None,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     """Execute different types of write operations"""
     excluded_locations = [] if excluded_locations is None else excluded_locations
-    if availability_strategy is not _Unset:
+    if availability_strategy is not None:
         kwargs['availability_strategy'] = availability_strategy
 
     if operation == CREATE:
@@ -367,7 +366,7 @@ class TestAsyncAvailabilityStrategy:
     @pytest.mark.parametrize("operation", [READ, QUERY, QUERY_PK, READ_ALL, CHANGE_FEED, CREATE, UPSERT, REPLACE, DELETE, PATCH, BATCH])
     @pytest.mark.parametrize("client_availability_strategy, request_availability_strategy", [
         (None, {'threshold_ms':150, 'threshold_steps_ms':50}),
-        ({'threshold_ms':150, 'threshold_steps_ms':50}, _Unset),
+        ({'threshold_ms':150, 'threshold_steps_ms':50}, None),
         ({'threshold_ms':150, 'threshold_steps_ms':50},
          {'threshold_ms':150, 'threshold_steps_ms':50})
     ])
@@ -416,7 +415,7 @@ class TestAsyncAvailabilityStrategy:
     @pytest.mark.parametrize("operation",[READ, QUERY, QUERY_PK, READ_ALL, CHANGE_FEED, CREATE, UPSERT, REPLACE, DELETE, PATCH, BATCH])
     @pytest.mark.parametrize("client_availability_strategy, request_availability_strategy", [
         (None, {'threshold_ms':150, 'threshold_steps_ms':50}),
-        ({'threshold_ms':150, 'threshold_steps_ms':50}, _Unset),
+        ({'threshold_ms':150, 'threshold_steps_ms':50}, None),
         ({'threshold_ms':700, 'threshold_steps_ms':50}, {'threshold_ms':150, 'threshold_steps_ms':50})
     ])
     async def test_client_availability_strategy_failover(
