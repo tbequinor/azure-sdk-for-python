@@ -114,7 +114,7 @@ class RequestObject(object): # pylint: disable=too-many-instance-attributes
     def set_availability_strategy(
             self,
             options: Mapping[str, Any],
-            client_strategy_config: Optional[CrossRegionHedgingStrategy] = None) -> None:
+            client_strategy_config: Optional[Union[CrossRegionHedgingStrategy, bool]] = None) -> None:
         """Sets the availability strategy config for this request from options.
         If not in options, uses the client's default strategy.
         If False is in options, client defaults are NOT used (explicitly disabled).
