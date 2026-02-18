@@ -161,34 +161,14 @@ with (
         if run.status == "completed" or run.status == "failed":
             print(f"Eval Run Report URL: {run.report_url}")
 
-            # Fetch all output items with pagination
-            all_output_items = []
-            after = None
-            
-            while True:
-                if after:
-                    page = client.evals.runs.output_items.list(run_id=run.id, eval_id=eval_object.id, limit=100, after=after)
-                else:
-                    page = client.evals.runs.output_items.list(run_id=run.id, eval_id=eval_object.id, limit=100)
-                
-                # Convert page to dict to access properties
-                page_dict = page.to_dict() if hasattr(page, 'to_dict') else page
-                
-                # Add items from this page
-                page_data = page_dict.get('data', []) if isinstance(page_dict, dict) else list(page)
-                all_output_items.extend(page_data)
-                
-                # Check if there are more pages
-                has_more = page_dict.get('has_more', False) if isinstance(page_dict, dict) else False
-                if not has_more:
-                    break
-                    
-                # Get the cursor for next page
-                after = page_dict.get('last_id') if isinstance(page_dict, dict) else None
-                if not after:
-                    break
-                    
-                print(f"Fetched {len(page_data)} items, continuing pagination...")
+            # Fetch all output items using automatic pagination
+            all_output_items = list(
+                client.evals.runs.output_items.list(
+                    run_id=run.id,
+                    eval_id=eval_object.id,
+                    limit=100,
+                )
+            )
 
             # Write all output items to JSONL file
             with open(download_data_file, 'w') as f:
