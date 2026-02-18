@@ -261,9 +261,10 @@ class ContainerProxy:
             tolerate such risks or has logic to safely detect and handle duplicate operations. Default is None (no retries).
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: Item with the given ID already exists.
         :returns: A CosmosDict representing the new item. The dict will be empty if `no_response` is specified.
         :rtype: ~azure.cosmos.CosmosDict[str, Any]
@@ -351,9 +352,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The given item couldn't be retrieved.
         :returns: A CosmosDict representing the retrieved item.
         :rtype: ~azure.cosmos.CosmosDict[str, Any]
@@ -424,9 +426,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :returns: An AsyncItemPaged of items (dicts).
         :rtype: AsyncItemPaged[dict[str, Any]]
         """
@@ -493,9 +496,10 @@ class ContainerProxy:
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The read-many operation failed.
         :returns: A CosmosList containing the retrieved items. Items that were not found are omitted from the list.
             The returned items have no guaranteed ordering.
@@ -594,9 +598,10 @@ class ContainerProxy:
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :returns: An Iterable of items (dicts).
         :rtype: AsyncItemPaged[dict[str, Any]]
 
@@ -678,9 +683,10 @@ class ContainerProxy:
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :returns: An Iterable of items (dicts).
         :rtype: AsyncItemPaged[dict[str, Any]]
 
@@ -760,9 +766,10 @@ class ContainerProxy:
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :returns: An Iterable of items (dicts).
         :rtype: AsyncItemPaged[Dict[str, Any]]
 
@@ -836,9 +843,10 @@ class ContainerProxy:
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :returns: An Iterable of items (dicts).
         :rtype: AsyncItemPaged[dict[str, Any]]
 
@@ -962,9 +970,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An AsyncItemPaged of items (dicts).
@@ -1009,9 +1018,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An AsyncItemPaged of items (dicts).
@@ -1044,9 +1054,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An AsyncItemPaged of items (dicts).
@@ -1091,9 +1102,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An AsyncItemPaged of items (dicts).
@@ -1135,9 +1147,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
         :paramtype response_hook: Callable[[Mapping[str, str], dict[str, Any]], None]
         :returns: An AsyncItemPaged of items (dicts).
@@ -1237,9 +1250,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The given item could not be upserted.
         :returns: A CosmosDict representing the upserted item. The dict will be empty if `no_response` is specified.
         :rtype: ~azure.cosmos.CosmosDict[str, Any]
@@ -1375,9 +1389,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The replace operation failed or the item with
             given id does not exist.
         :returns: A CosmosDict representing the item after replace went through. The dict will be empty if `no_response`
@@ -1475,9 +1490,10 @@ class ContainerProxy:
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The patch operations failed or the item with
             given id does not exist.
         :returns: A CosmosDict representing the item after the patch operations went through. The dict will be empty if
@@ -1568,9 +1584,10 @@ class ContainerProxy:
         :paramtype response_hook: Callable[[Mapping[str, str], None], None]
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The item wasn't deleted successfully.
         :raises ~azure.cosmos.exceptions.CosmosResourceNotFoundError: The item does not exist in the container.
         :rtype: None
@@ -1916,9 +1933,10 @@ class ContainerProxy:
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :returns: A CosmosList representing the items after the batch operations went through.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
-            False (disable hedging even if client has it enabled), or a dict with keys
-            ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
+            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            False (disable hedging even if client has it enabled),
+            or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
+            If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The batch failed to execute.
         :raises ~azure.cosmos.exceptions.CosmosBatchOperationError: A transactional batch operation failed in the batch.
         :rtype: ~azure.cosmos.CosmosList[dict[str, Any]]
