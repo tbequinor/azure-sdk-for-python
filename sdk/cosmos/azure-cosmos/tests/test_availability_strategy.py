@@ -16,7 +16,7 @@ from azure.core.exceptions import ServiceResponseError
 import test_config
 from _fault_injection_transport import FaultInjectionTransport
 from azure.cosmos import CosmosClient, _location_cache
-from azure.cosmos._availability_strategy_config import _validate_hedging_strategy
+from azure.cosmos._availability_strategy_config import _validate_request_hedging_strategy
 from azure.cosmos.documents import _OperationType as OperationType
 from azure.cosmos.exceptions import CosmosHttpResponseError
 from azure.cosmos.http_constants import ResourceType
@@ -342,7 +342,7 @@ class TestAvailabilityStrategy:
         """Test that creating strategy with non-positive thresholds raises ValueError when enabled"""
         with pytest.raises(ValueError, match=error_message):
             config = {'threshold_ms':threshold_ms, 'threshold_steps_ms':threshold_steps_ms}
-            _validate_hedging_strategy(config)
+            _validate_request_hedging_strategy(config)
 
     @pytest.mark.parametrize("operation", [READ, QUERY, QUERY_PK, READ_ALL, CHANGE_FEED, CREATE, UPSERT, REPLACE, DELETE, PATCH, BATCH])
     @pytest.mark.parametrize("client_availability_strategy, request_availability_strategy", [

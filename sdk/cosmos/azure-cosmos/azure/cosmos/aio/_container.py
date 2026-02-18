@@ -37,7 +37,7 @@ from azure.cosmos._change_feed.change_feed_utils import validate_kwargs
 from ._cosmos_client_connection_async import CosmosClientConnection
 from ._scripts import ScriptsProxy
 from .. import _utils as utils
-from .._availability_strategy_config import _validate_hedging_strategy
+from .._availability_strategy_config import _validate_request_hedging_strategy
 from .._base import (_build_properties_cache, _deserialize_throughput, _replace_throughput,
                      build_options as _build_options, GenerateGuidId, validate_cache_staleness_value)
 from .._change_feed.feed_range_internal import FeedRangeInternalEpk
@@ -298,7 +298,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["disableAutomaticIdGeneration"] = not enable_automatic_id_generation
         if indexing_directive is not None:
@@ -380,7 +380,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
 
         request_options = _build_options(kwargs)
         request_options["partitionKey"] = await self._set_partition_key(partition_key)
@@ -439,7 +439,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
 
         feed_options = _build_options(kwargs)
         if max_item_count is not None:
@@ -515,7 +515,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
 
         kwargs['max_concurrency'] = max_concurrency
         kwargs["containerProperties"] = self._get_properties_with_options
@@ -882,7 +882,7 @@ class ContainerProxy:
         if (Constants.Kwargs.AVAILABILITY_STRATEGY in feed_options
                 and feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] is not None):
             feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] =\
-                _validate_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
+                _validate_request_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
 
         feed_options["correlatedActivityId"] = GenerateGuidId()
 
@@ -1174,7 +1174,7 @@ class ContainerProxy:
         if (Constants.Kwargs.AVAILABILITY_STRATEGY in feed_options
                 and feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] is not None):
             feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] =\
-                _validate_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
+                _validate_request_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
 
         response_hook = kwargs.pop("response_hook", None)
         if hasattr(response_hook, "clear"):
@@ -1265,7 +1265,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["disableAutomaticIdGeneration"] = True
         await self._get_properties_with_options(request_options)
@@ -1406,7 +1406,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["disableAutomaticIdGeneration"] = True
         await self._get_properties_with_options(request_options)
@@ -1503,7 +1503,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["disableAutomaticIdGeneration"] = True
         request_options["partitionKey"] = await self._set_partition_key(partition_key)
@@ -1594,7 +1594,7 @@ class ContainerProxy:
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["partitionKey"] = await self._set_partition_key(partition_key)
         await self._get_properties_with_options(request_options)
@@ -1949,7 +1949,7 @@ class ContainerProxy:
         if retry_write is not None:
             kwargs[Constants.Kwargs.RETRY_WRITE] = retry_write
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         request_options = _build_options(kwargs)
         request_options["partitionKey"] = await self._set_partition_key(partition_key)
         request_options["disableAutomaticIdGeneration"] = True

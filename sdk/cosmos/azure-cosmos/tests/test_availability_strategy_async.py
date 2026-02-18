@@ -15,7 +15,7 @@ from azure.core.exceptions import ServiceResponseError
 import test_config
 from _fault_injection_transport_async import FaultInjectionTransportAsync
 from azure.cosmos import _location_cache
-from azure.cosmos._availability_strategy_config import _validate_hedging_strategy
+from azure.cosmos._availability_strategy_config import _validate_request_hedging_strategy
 from azure.cosmos.aio import CosmosClient
 from azure.cosmos.documents import _OperationType as OperationType
 from azure.cosmos.exceptions import CosmosHttpResponseError
@@ -360,7 +360,7 @@ class TestAsyncAvailabilityStrategy:
         with pytest.raises(ValueError, match=error_message):
             config = {'threshold_ms': threshold_ms,
                       'threshold_steps_ms': threshold_steps_ms}
-            _validate_hedging_strategy(config)
+            _validate_request_hedging_strategy(config)
 
     @pytest.mark.asyncio
     @pytest.mark.parametrize("operation", [READ, QUERY, QUERY_PK, READ_ALL, CHANGE_FEED, CREATE, UPSERT, REPLACE, DELETE, PATCH, BATCH])

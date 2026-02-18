@@ -46,7 +46,7 @@ from azure.core.utils import CaseInsensitiveDict
 from azure.cosmos.aio._global_partition_endpoint_manager_per_partition_automatic_failover_async import (
     _GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverAsync)
 from .. import _base as base
-from .._availability_strategy_config import CrossRegionHedgingStrategy, _validate_hedging_strategy
+from .._availability_strategy_config import CrossRegionHedgingStrategy, validate_client_hedging_strategy
 from .._base import _build_properties_cache
 from .. import documents
 from .._change_feed.aio.change_feed_iterable import ChangeFeedIterable
@@ -141,7 +141,7 @@ class CosmosClientConnection:  # pylint: disable=too-many-public-methods,too-man
         self.client_id = str(uuid.uuid4())
         self.url_connection = url_connection
         self.availability_strategy: Union[CrossRegionHedgingStrategy, bool, None] =\
-            _validate_hedging_strategy(availability_strategy)
+            validate_client_hedging_strategy(availability_strategy)
         self.availability_strategy_max_concurrency: Optional[int] = availability_strategy_max_concurrency
         self.master_key: Optional[str] = None
         self.resource_tokens: Optional[Mapping[str, Any]] = None

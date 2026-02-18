@@ -33,7 +33,7 @@ from azure.core.tracing.decorator import distributed_trace
 from azure.cosmos._change_feed.change_feed_utils import add_args_to_kwargs, validate_kwargs
 
 from . import _utils as utils
-from ._availability_strategy_config import _validate_hedging_strategy
+from ._availability_strategy_config import _validate_request_hedging_strategy
 from ._base import (_build_properties_cache, _deserialize_throughput, _replace_throughput, build_options,
                     GenerateGuidId, validate_cache_staleness_value)
 from ._change_feed.feed_range_internal import FeedRangeInternalEpk
@@ -253,7 +253,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -280,7 +280,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)
@@ -337,7 +337,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -360,7 +360,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
 
         kwargs['max_concurrency'] = max_concurrency
         query_options = build_options(kwargs)
@@ -413,7 +413,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -429,7 +429,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         feed_options = build_options(kwargs)
@@ -496,7 +496,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -545,7 +545,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -581,7 +581,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -628,7 +628,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -675,7 +675,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -719,7 +719,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if (Constants.Kwargs.AVAILABILITY_STRATEGY in feed_options
                 and feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] is not None):
             feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] =\
-                _validate_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
+                _validate_request_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
 
         response_hook = kwargs.pop("response_hook", None)
         if hasattr(response_hook, "clear"):
@@ -797,7 +797,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -886,7 +886,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :paramtype availability_strategy: Union[bool, dict[str, Any]]
@@ -960,7 +960,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword str query: The Azure Cosmos DB SQL query to execute.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
@@ -1017,7 +1017,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if (Constants.Kwargs.AVAILABILITY_STRATEGY in feed_options
                 and feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] is not None):
             feed_options[Constants.Kwargs.AVAILABILITY_STRATEGY] =\
-                _validate_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
+                _validate_request_hedging_strategy(feed_options.pop(Constants.Kwargs.AVAILABILITY_STRATEGY))
 
         feed_options["correlatedActivityId"] = GenerateGuidId()
         feed_options["containerRID"] = self.__get_client_container_caches()[self.container_link]["_rid"]
@@ -1159,7 +1159,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The replace operation failed or the item with
@@ -1190,7 +1190,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)
@@ -1262,7 +1262,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The given item could not be upserted.
@@ -1288,7 +1288,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         if retry_write is not None:
@@ -1364,7 +1364,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: Item with the given ID already exists.
@@ -1401,7 +1401,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)
@@ -1479,7 +1479,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :raises ~azure.cosmos.exceptions.CosmosHttpResponseError: The patch operations failed or the item with
@@ -1507,7 +1507,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)
@@ -1561,7 +1561,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             tolerate such risks or has logic to safely detect and handle duplicate operations. Default is None (no retries).
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :keyword Sequence[str] excluded_locations: Excluded locations to be skipped from preferred locations. The locations
@@ -1601,7 +1601,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if retry_write is not None:
             kwargs[Constants.Kwargs.RETRY_WRITE] = retry_write
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)
@@ -1662,7 +1662,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
+            (overrides client settings and uses default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled), or a dict with keys
             ``threshold_ms`` and ``threshold_steps_ms``. If not provided, uses the client's configured strategy.
         :keyword response_hook: A callable invoked with the response metadata.
@@ -1686,7 +1686,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         if throughput_bucket is not None:
             kwargs["throughput_bucket"] = throughput_bucket
         if availability_strategy is not None:
-            kwargs["availability_strategy"] = _validate_hedging_strategy(availability_strategy)
+            kwargs["availability_strategy"] = _validate_request_hedging_strategy(availability_strategy)
         if response_hook is not None:
             kwargs['response_hook'] = response_hook
         request_options = build_options(kwargs)

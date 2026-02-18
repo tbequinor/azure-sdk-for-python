@@ -58,7 +58,7 @@ from . import _utils
 from . import documents
 from . import http_constants, exceptions
 from ._auth_policy import CosmosBearerTokenCredentialPolicy
-from ._availability_strategy_config import _validate_hedging_strategy, CrossRegionHedgingStrategy
+from ._availability_strategy_config import validate_client_hedging_strategy, CrossRegionHedgingStrategy
 from ._base import _build_properties_cache
 from ._change_feed.change_feed_iterable import ChangeFeedIterable
 from ._change_feed.change_feed_state import ChangeFeedState
@@ -146,7 +146,7 @@ class CosmosClientConnection:  # pylint: disable=too-many-public-methods,too-man
         self.client_id = str(uuid.uuid4())
         self.url_connection = url_connection
         self.availability_strategy: Union[CrossRegionHedgingStrategy, bool, None] =\
-            _validate_hedging_strategy(availability_strategy)
+            validate_client_hedging_strategy(availability_strategy)
         self.availability_strategy_executor: Optional[ThreadPoolExecutor] = availability_strategy_executor
         self.master_key: Optional[str] = None
         self.resource_tokens: Optional[Mapping[str, Any]] = None

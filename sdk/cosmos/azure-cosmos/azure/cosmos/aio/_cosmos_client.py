@@ -179,7 +179,8 @@ class CosmosClient:  # pylint: disable=client-accepts-api-version-keyword
         response payloads for write operations on items by default unless specified differently per operation.
     :keyword int throughput_bucket: The desired throughput bucket for the client
     :keyword str user_agent_suffix: Allows user agent suffix to be specified when creating client
-    :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
+    :keyword Union[bool, dict[str, Any]] availability_strategy:
+        Enables an availability strategy by using cross-region request hedging.
         Can be True (use default values: threshold_ms=500, threshold_steps_ms=100),
         False (disable hedging), or a dict with keys ``threshold_ms`` and ``threshold_steps_ms``.
         Default value is False (hedging disabled).
