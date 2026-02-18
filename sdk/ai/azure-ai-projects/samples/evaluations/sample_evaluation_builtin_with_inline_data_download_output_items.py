@@ -12,7 +12,7 @@ DESCRIPTION:
     dataset content.
 
 USAGE:
-    python sample_evaluations_builtin_with_inline_data.py
+    python sample_evaluation_builtin_with_inline_data_download_output_items.py
 
     Before running the sample:
 
