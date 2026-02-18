@@ -22,7 +22,7 @@ USAGE:
     1) AZURE_AI_PROJECT_ENDPOINT - Required. The Azure AI Project endpoint, as found in the overview page of your
        Microsoft Foundry project. It has the form: https://<account_name>.services.ai.azure.com/api/projects/<project_name>.
     2) AZURE_AI_MODEL_DEPLOYMENT_NAME - Required. The name of the model deployment to use for evaluation.
-    3) DATA_FOLDER - Optional. The folder path where the data files for upload are located.
+    3) DATA_FOLDER - Optional. The folder path where downloaded evaluation output items (for example, all_output_items.jsonl) will be written.
 """
 
 import os
