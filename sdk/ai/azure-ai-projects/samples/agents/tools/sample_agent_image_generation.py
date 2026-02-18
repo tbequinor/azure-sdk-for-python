@@ -29,14 +29,14 @@ USAGE:
        page of your Microsoft Foundry portal.
     2) AZURE_AI_MODEL_DEPLOYMENT_NAME - The deployment name of the chat model (e.g., gpt-4o, gpt-4o-mini, gpt-5o, gpt-5o-mini)
        used by the agent for understanding and responding to prompts. This is NOT the image generation model.
-    3) IMAGE_GENERATION_MODEL_DEPLOYMENT_NAME - The deployment name of the image generation model (e.g., gpt-image-1-mini)
+    3) IMAGE_GENERATION_MODEL_DEPLOYMENT_NAME - The deployment name of the image generation model (e.g., gpt-image-1)
        used by the ImageGenTool.
 
     NOTE:
-    - Image generation requires a separate "gpt-image-1-mini" deployment which is specified when constructing
+    - Image generation requires a separate "gpt-image-1" deployment which is specified when constructing
       the `ImageGenTool`, as well as providing it in the `x-ms-oai-image-generation-deployment` header when
       calling `.responses.create`.
-    - AZURE_AI_MODEL_DEPLOYMENT_NAME should be set to your chat model (e.g., gpt-4o), NOT "gpt-image-1-mini".
+    - AZURE_AI_MODEL_DEPLOYMENT_NAME should be set to your chat model (e.g., gpt-4o), NOT "gpt-image-1".
     - The generated image will be saved as "microsoft.png" in the OS temporary directory.
 """
 
@@ -62,14 +62,14 @@ with (
 
     # [START tool_declaration]
     tool = ImageGenTool(  # type: ignore[call-overload]
-        model=image_generation_model,  # Model such as "gpt-image-1-mini"  # type: ignore
+        model=image_generation_model,  # Model such as "gpt-image-1"  # type: ignore
         quality="low",
         size="1024x1024",
     )
     # [END tool_declaration]
 
     agent = project_client.agents.create_version(
-        agent_name="MyAgent",
+        agent_name="ahibrahim-image-gen",
         definition=PromptAgentDefinition(
             model=os.environ["AZURE_AI_MODEL_DEPLOYMENT_NAME"],
             instructions="Generate images based on user prompts",
@@ -89,8 +89,8 @@ with (
     print(f"Response created: {response.id}")
 
     print("\nCleaning up...")
-    project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
-    print("Agent deleted")
+    # project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
+    # print("Agent deleted")
 
     # [START download_image]
     image_data = [output.result for output in response.output if output.type == "image_generation_call"]
