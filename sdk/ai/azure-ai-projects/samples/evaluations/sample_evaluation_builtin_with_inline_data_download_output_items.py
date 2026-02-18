@@ -27,11 +27,11 @@ USAGE:
 
 import os
 import json
+import time
+from pprint import pprint
 
 from azure.identity import DefaultAzureCredential
 from azure.ai.projects import AIProjectClient
-import time
-from pprint import pprint
 from openai.types.evals.create_eval_jsonl_run_data_source_param import (
     CreateEvalJSONLRunDataSourceParam,
     SourceFileContent,
