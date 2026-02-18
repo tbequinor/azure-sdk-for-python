@@ -85,8 +85,8 @@ class _ContentUnderstandingClientOperationsMixin(
         body: Union[JSON, IO[bytes]] = _Unset,
         *,
         string_encoding: str,
+        inputs: list[_models.AnalyzeInput] = _Unset,
         processing_location: Optional[Union[str, _models.ProcessingLocation]] = None,
-        inputs: Optional[list[_models.AnalyzeInput]] = None,
         model_deployments: Optional[dict[str, str]] = None,
         **kwargs: Any
     ) -> AsyncIterator[bytes]:
@@ -107,6 +107,8 @@ class _ContentUnderstandingClientOperationsMixin(
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
         if body is _Unset:
+            if inputs is _Unset:
+                raise TypeError("missing required argument: inputs")
             body = {"inputs": inputs, "modelDeployments": model_deployments}
             body = {k: v for k, v in body.items() if v is not None}
         content_type = content_type or "application/json"
@@ -171,9 +173,9 @@ class _ContentUnderstandingClientOperationsMixin(
         analyzer_id: str,
         *,
         string_encoding: str,
+        inputs: list[_models.AnalyzeInput],
         processing_location: Optional[Union[str, _models.ProcessingLocation]] = None,
         content_type: str = "application/json",
-        inputs: Optional[list[_models.AnalyzeInput]] = None,
         model_deployments: Optional[dict[str, str]] = None,
         **kwargs: Any
     ) -> AsyncLROPoller[_models.AnalyzeResult]:
@@ -185,15 +187,15 @@ class _ContentUnderstandingClientOperationsMixin(
            Possible values are 'codePoint', 'utf16', and ``utf8``.  Default is ``codePoint``.").
          Required.
         :paramtype string_encoding: str
+        :keyword inputs: Inputs to analyze.  Currently, only pro mode supports multiple inputs.
+         Required.
+        :paramtype inputs: list[~azure.ai.contentunderstanding.models.AnalyzeInput]
         :keyword processing_location: The location where the data may be processed.  Defaults to
          global. Known values are: "geography", "dataZone", and "global". Default value is None.
         :paramtype processing_location: str or ~azure.ai.contentunderstanding.models.ProcessingLocation
         :keyword content_type: Body Parameter content-type. Content type parameter for JSON body.
          Default value is "application/json".
         :paramtype content_type: str
-        :keyword inputs: Inputs to analyze.  Currently, only pro mode supports multiple inputs. Default
-         value is None.
-        :paramtype inputs: list[~azure.ai.contentunderstanding.models.AnalyzeInput]
         :keyword model_deployments: Override the resource-level default mapping of supported large
          language model (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string
          to string
@@ -285,8 +287,8 @@ class _ContentUnderstandingClientOperationsMixin(
         body: Union[JSON, IO[bytes]] = _Unset,
         *,
         string_encoding: str,
+        inputs: list[_models.AnalyzeInput] = _Unset,
         processing_location: Optional[Union[str, _models.ProcessingLocation]] = None,
-        inputs: Optional[list[_models.AnalyzeInput]] = None,
         model_deployments: Optional[dict[str, str]] = None,
         **kwargs: Any
     ) -> AsyncLROPoller[_models.AnalyzeResult]:
@@ -300,12 +302,12 @@ class _ContentUnderstandingClientOperationsMixin(
            Possible values are 'codePoint', 'utf16', and ``utf8``.  Default is ``codePoint``.").
          Required.
         :paramtype string_encoding: str
+        :keyword inputs: Inputs to analyze.  Currently, only pro mode supports multiple inputs.
+         Required.
+        :paramtype inputs: list[~azure.ai.contentunderstanding.models.AnalyzeInput]
         :keyword processing_location: The location where the data may be processed.  Defaults to
          global. Known values are: "geography", "dataZone", and "global". Default value is None.
         :paramtype processing_location: str or ~azure.ai.contentunderstanding.models.ProcessingLocation
-        :keyword inputs: Inputs to analyze.  Currently, only pro mode supports multiple inputs. Default
-         value is None.
-        :paramtype inputs: list[~azure.ai.contentunderstanding.models.AnalyzeInput]
         :keyword model_deployments: Override the resource-level default mapping of supported large
          language model (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string
          to string
@@ -338,8 +340,8 @@ class _ContentUnderstandingClientOperationsMixin(
                 analyzer_id=analyzer_id,
                 body=body,
                 string_encoding=string_encoding,
-                processing_location=processing_location,
                 inputs=inputs,
+                processing_location=processing_location,
                 model_deployments=model_deployments,
                 content_type=content_type,
                 cls=lambda x, y, z: x,
@@ -413,12 +415,10 @@ class _ContentUnderstandingClientOperationsMixin(
         }
         error_map.update(kwargs.pop("error_map", {}) or {})
 
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("content-type", None)
-        )
+        content_type: str = kwargs.pop("content_type")
         cls: ClsType[AsyncIterator[bytes]] = kwargs.pop("cls", None)
 
         _content = binary_input
@@ -506,12 +506,10 @@ class _ContentUnderstandingClientOperationsMixin(
         :rtype: ~azure.core.polling.AsyncLROPoller[~azure.ai.contentunderstanding.models.AnalyzeResult]
         :raises ~azure.core.exceptions.HttpResponseError:
         """
-        _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+        _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        content_type: Optional[str] = kwargs.pop(
-            "content_type", _headers.pop("content-type", None)
-        )
+        content_type: str = kwargs.pop("content_type")
         cls: ClsType[_models.AnalyzeResult] = kwargs.pop("cls", None)
         polling: Union[bool, AsyncPollingMethod] = kwargs.pop("polling", True)
         lro_delay = kwargs.pop("polling_interval", self._config.polling_interval)
