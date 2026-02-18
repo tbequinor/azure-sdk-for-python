@@ -954,9 +954,10 @@ Cross region hedging availability strategy improves availability and reduces lat
 
 You can enable cross region hedging by passing the `availability_strategy` parameter to the `CosmosClient` or per-request. This parameter accepts:
 
-- **`True`**: Enable hedging with default values (`threshold_ms=500`, `threshold_steps_ms=100`)
-- **`False`**: Explicitly disable hedging (overrides client-level settings)
+- **`True`**: Enable hedging with default values (`threshold_ms=500`, `threshold_steps_ms=100`) or override client settings to this default at the request level.
+- **`False`**: Explicitly disable hedging at the client or request level (overrides client-level settings)
 - **`dict`**: Enable hedging with custom values. The keys are `threshold_ms` (delay before sending a hedged request) and `threshold_steps_ms` (step interval for additional hedged requests). Missing keys will use default values.
+- **`None`**: Default value only usable at the request level. Use the client-level configurations.
 
 Hedging will also be implicitly enabled when per-partition automatic failover is enabled, in which case the `CrossRegionHedgingStrategy` applies default values of 500 ms for `threshold_ms` and 100 ms for `threshold_steps_ms` unless you override them via `availability_strategy`.
 
