@@ -89,8 +89,8 @@ with (
     print(f"Response created: {response.id}")
 
     print("\nCleaning up...")
-    # project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
-    # print("Agent deleted")
+    project_client.agents.delete_version(agent_name=agent.name, agent_version=agent.version)
+    print("Agent deleted")
 
     # [START download_image]
     image_data = [output.result for output in response.output if output.type == "image_generation_call"]
