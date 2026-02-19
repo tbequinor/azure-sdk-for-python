@@ -233,7 +233,7 @@ class ConversationValidator(ValidatorInterface):
                         )
                         if name in self.UNSUPPORTED_TOOLS:
                             return EvaluationException(
-                                message=f"{name} tool call is currently not supported for {self.error_target} evaluator.",
+                                message=f"{name} tool call is currently not supported for {self.error_target.value} evaluator.",
                                 blame=ErrorBlame.USER_ERROR,
                                 category=ErrorCategory.NOT_APPLICABLE,
                                 target=self.error_target,
