@@ -31,9 +31,14 @@ changeKinds:
     title: Other Changes
     description: Internal changes that are not user facing
 
+packages:
+  - path: "sdk/*/*"
+    type: pip
+
 changelog: ["@chronus/github/changelog", { repo: "azure/azure-sdk-for-python" }]
 
 changedFiles:
+  - "sdk/**"
   - "!**/*.md"
   - "!**/test_*.py"
   - "!**/*_test.py"
