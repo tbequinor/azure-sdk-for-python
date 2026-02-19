@@ -87,7 +87,7 @@ class TestEvaluate:
         # Test with tool call for which definition is not provided
         result = tool_call_accuracy(
             query="Where is the Eiffel Tower?",
-            tool_calls=[{"type": "tool_call", "name": "some_other_tool", "arguments": {}}],
+            tool_calls=[{"type": "tool_call", "name": "some_other_tool", "tool_call_id": "1", "arguments": {}}],
             tool_definitions=[
                 {
                     "name": "fetch_weather",
