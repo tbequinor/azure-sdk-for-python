@@ -24,6 +24,7 @@ from ._models import (
     JsonField,
     ContentField,
 )
+from ._enums import ProcessingLocation
 
 # Note: The .value property is added to ContentField classes at runtime in patch_sdk()
 # Type annotations are set on the classes' __annotations__ for type checker support
@@ -240,6 +241,11 @@ def patch_sdk():
     if not hasattr(ContentField, "__annotations__"):
         ContentField.__annotations__ = {}
     ContentField.__annotations__["value"] = Any
+
+    # SDK-FIX: Rename ProcessingLocation.GLOBALEnum to ProcessingLocation.GLOBAL
+    # This is a typespec-python emitter issue: "global" is a Python reserved keyword,
+    # so the emitter appends "Enum" to the member name. This patch restores the expected name.
+    ProcessingLocation.GLOBAL = ProcessingLocation.GLOBALEnum  # type: ignore[attr-defined]
 
     # SDK-FIX: Patch AudioVisualContent.__init__ to handle KeyFrameTimesMs casing inconsistency
     # The service returns "KeyFrameTimesMs" (capital K) but TypeSpec defines "keyFrameTimesMs" (lowercase k)
