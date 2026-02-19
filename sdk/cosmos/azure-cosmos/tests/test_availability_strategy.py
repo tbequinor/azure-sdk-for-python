@@ -132,7 +132,7 @@ def _perform_write_operation(
         expected_uris,
         excluded_uris,
         retry_write=False,
-        availability_strategy: Optional[dict[str, Any]] = None,
+        availability_strategy: Optional[Union[bool, dict[str, Any]]] = None,
         excluded_locations: Optional[list[str]] = None,
         **kwargs):
     """Execute different types of write operations"""
@@ -570,9 +570,9 @@ class TestAvailabilityStrategy:
         # Test should fail with error from the first region
         with pytest.raises(CosmosHttpResponseError) as exc_info:
             if operation in [READ, QUERY, QUERY_PK, READ_ALL, CHANGE_FEED]:
-                _perform_read_operation(operation, setup['col'], doc, expected_uris, excluded_uris, availability_strategy=None)
+                _perform_read_operation(operation, setup['col'], doc, expected_uris, excluded_uris, availability_strategy=False)
             else:
-                _perform_write_operation(operation, setup['col'], doc, expected_uris, excluded_uris, retry_write=True, availability_strategy=None)
+                _perform_write_operation(operation, setup['col'], doc, expected_uris, excluded_uris, retry_write=True, availability_strategy=False)
 
         # Verify error code
         assert exc_info.value.status_code == 400
