@@ -254,8 +254,8 @@ Generate images based on text prompts with customizable resolution, quality, and
 <!-- SNIPPET:sample_agent_image_generation.tool_declaration -->
 
 ```python
-tool = ImageGenTool(  # type: ignore[call-overload]
-    model=image_generation_model,  # Model such as "gpt-image-1-mini"  # type: ignore
+tool = ImageGenTool(
+    model=image_generation_model,  # Model such as "gpt-image-1"
     quality="low",
     size="1024x1024",
 )
@@ -270,7 +270,7 @@ After calling `responses.create()`, you can download file using the returned res
 image_data = [output.result for output in response.output if output.type == "image_generation_call"]
 if image_data and image_data[0]:
     print("Downloading generated image...")
-    filename = "microsoft.png"
+    filename = "happy-dogs.png"
     file_path = os.path.join(tempfile.gettempdir(), filename)
 
     with open(file_path, "wb") as f:
@@ -998,7 +998,7 @@ fine_tuning_job = openai_client.fine_tuning.jobs.create(
         "trainingType": "GlobalStandard"
     },  # Recommended approach to set trainingType. Omitting this field may lead to unsupported behavior.
     # Preferred trainingtype is GlobalStandard.  Note:  Global training offers cost savings , but copies data and weights outside the current resource region.
-    # Learn more - https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/ and https://azure.microsoft.com/en-us/explore/global-infrastructure/data-residency/
+    # Learn more - https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/ and https://azure.microsoft.com/explore/global-infrastructure/data-residency/
 )
 print(fine_tuning_job)
 ```
