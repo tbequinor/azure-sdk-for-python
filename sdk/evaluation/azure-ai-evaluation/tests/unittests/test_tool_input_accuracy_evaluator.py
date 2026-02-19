@@ -440,33 +440,29 @@ class TestToolInputAccuracyEvaluator:
 
     def test_evaluate_no_tool_definitions(self, mock_model_config):
         """Test evaluation when no tool definitions are provided."""
+        evaluator = _ToolInputAccuracyEvaluator(model_config=mock_model_config)
+        evaluator._flow = MagicMock(side_effect=flow_side_effect)
+
+        query = "Get weather"
+        response = [
+            {
+                "role": "assistant",
+                "content": [
+                    {
+                        "type": "tool_call",
+                        "tool_call_id": "call_123",
+                        "name": "get_weather",
+                        "arguments": {"location": "Paris"},
+                    }
+                ],
+            }
+        ]
+        tool_definitions = []
+
         with pytest.raises(EvaluationException) as exc_info:
-            evaluator = _ToolInputAccuracyEvaluator(model_config=mock_model_config)
-            evaluator._flow = MagicMock(side_effect=flow_side_effect)
-
-            query = "Get weather"
-            response = [
-                {
-                    "role": "assistant",
-                    "content": [
-                        {
-                            "type": "tool_call",
-                            "tool_call_id": "call_123",
-                            "name": "get_weather",
-                            "arguments": {"location": "Paris"},
-                        }
-                    ],
-                }
-            ]
-            tool_definitions = []
-
             evaluator(query=query, response=response, tool_definitions=tool_definitions)
 
-        key = _ToolInputAccuracyEvaluator._RESULT_KEY
-        assert result is not None
-        assert result[key] == 1
-        assert result[f"{key}_result"] == "pass"
-        assert _ToolInputAccuracyEvaluator._NO_TOOL_DEFINITIONS_MESSAGE in result[f"{key}_reason"]
+        assert "Tool definitions input is required but not provided." in str(exc_info.value)
 
     def test_evaluate_missing_tool_definitions(self, mock_model_config):
         """Test evaluation when tool definitions are missing for some tool calls."""
@@ -542,27 +538,23 @@ class TestToolInputAccuracyEvaluator:
 
     def test_evaluate_no_response(self, mock_model_config):
         """Test evaluation when no response is provided."""
+        evaluator = _ToolInputAccuracyEvaluator(model_config=mock_model_config)
+        evaluator._flow = MagicMock(side_effect=flow_side_effect)
+
+        query = "Get weather"
+        tool_definitions = [
+            {
+                "name": "get_weather",
+                "type": "function",
+                "description": "Get weather information",
+                "parameters": {"type": "object", "properties": {}},
+            }
+        ]
+
         with pytest.raises(EvaluationException) as exc_info:
-            evaluator = _ToolInputAccuracyEvaluator(model_config=mock_model_config)
-            evaluator._flow = MagicMock(side_effect=flow_side_effect)
-
-            query = "Get weather"
-            tool_definitions = [
-                {
-                    "name": "get_weather",
-                    "type": "function",
-                    "description": "Get weather information",
-                    "parameters": {"type": "object", "properties": {}},
-                }
-            ]
-
             evaluator(query=query, response=None, tool_definitions=tool_definitions)
 
-        key = _ToolInputAccuracyEvaluator._RESULT_KEY
-        assert result is not None
-        assert result[key] == 1
-        assert result[f"{key}_result"] == "pass"
-        assert "Response parameter is required" in result[f"{key}_reason"]
+        assert "Response is a required input and cannot be None." in str(exc_info.value)
 
     def test_parameter_extraction_accuracy_calculation(self, mock_model_config):
         """Test the parameter extraction accuracy calculation."""
