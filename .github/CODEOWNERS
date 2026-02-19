@@ -237,10 +237,7 @@
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/    @Aashish93-stack @johngallardo @Satya-Kolluri @sjiherzig
 
-# PRLabel: %
-
-
-Intelligence
+# PRLabel: %Document Intelligence
 /sdk/documentintelligence/    @bojunehsu @yungshinlintw
 
 # AzureSdkOwners: @bojunehsu @yungshinlintw
