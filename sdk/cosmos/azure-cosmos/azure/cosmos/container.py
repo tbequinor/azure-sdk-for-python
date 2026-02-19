@@ -337,7 +337,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -414,7 +414,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -498,7 +498,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -548,7 +548,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -585,7 +585,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -633,7 +633,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -681,7 +681,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -804,7 +804,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -894,7 +894,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
         :keyword str session_token: Token for use with Session consistency.
         :keyword int throughput_bucket: The desired throughput bucket for the client.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -969,7 +969,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             before high priority requests start getting throttled. Feature must first be enabled at the account level.
         :keyword str query: The Azure Cosmos DB SQL query to execute.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1169,7 +1169,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1273,7 +1273,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1376,7 +1376,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1492,7 +1492,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1575,7 +1575,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             tolerate such risks or has logic to safely detect and handle duplicate operations. Default is None (no retries).
         :keyword int throughput_bucket: The desired throughput bucket for the client
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.
@@ -1677,7 +1677,7 @@ class ContainerProxy:  # pylint: disable=too-many-public-methods
             If all preferred locations were excluded, primary/hub location will be used.
             This excluded_location will override existing excluded_locations in client level.
         :keyword Union[bool, dict[str, Any]] availability_strategy: Enables an availability strategy by using cross-region request hedging.
-            Can be True (use default SDK values: threshold_ms=500, threshold_steps_ms=100),
+            Can be True (use client config if present, otherwise use default values: threshold_ms=500, threshold_steps_ms=100),
             False (disable hedging even if client has it enabled),
             or a dict with keys ``threshold_ms`` and ``threshold_steps_ms`` to override the client's configured availability strategy.
             If not provided, uses the client's configured strategy.

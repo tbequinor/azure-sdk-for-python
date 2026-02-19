@@ -129,11 +129,18 @@ class RequestObject(object): # pylint: disable=too-many-instance-attributes
         # First try to get from options (method-level takes precedence)
         if Constants.Kwargs.AVAILABILITY_STRATEGY in options:
             strategy = options[Constants.Kwargs.AVAILABILITY_STRATEGY]
-            # If False, user explicitly disabled - don't use any strategy
-            if strategy is False:
-                self.availability_strategy = None
+            if isinstance(strategy, bool):
+                if strategy:
+                    # If True, use client config if available, otherwise default values
+                    if client_strategy_config is not None:
+                        self.availability_strategy = client_strategy_config
+                    else:
+                        self.availability_strategy = CrossRegionHedgingStrategy()
+                # If False, user explicitly disabled - don't use any strategy
+                else:
+                    self.availability_strategy = None
             else:
-                # CrossRegionHedgingStrategy or None
+                # CrossRegionHedgingStrategy object from request validation
                 self.availability_strategy = strategy
         # If not in options, use client default
         elif client_strategy_config is not None:
