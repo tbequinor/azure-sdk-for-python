@@ -67,18 +67,11 @@ def _validate_request_hedging_strategy(
     :returns: Validated configuration object, False if explicitly disabled, or None
     :rtype: Union[CrossRegionHedgingStrategy, bool, None]
     """
-    if config is None:
-        return None
-
-    if isinstance(config, bool):
-        if config:
-            # True -> use default values
-            return CrossRegionHedgingStrategy()
-        # False -> explicitly disabled, return False to signal override of client default
-        return False
-
-    # dict -> use values from dict
-    return CrossRegionHedgingStrategy(config)
+    if isinstance(config, dict):
+        # Validate dict values by attempting to create a strategy object
+        return CrossRegionHedgingStrategy(config)
+    # For bool and None, no validation needed as they are handled in the request object's `set_availability_strategy`
+    return config
 
 
 def validate_client_hedging_strategy(
