@@ -24,7 +24,8 @@ from ._models import (
     JsonField,
     ContentField,
 )
-from ._enums import ProcessingLocation
+from enum import Enum
+from azure.core import CaseInsensitiveEnumMeta
 
 # Note: The .value property is added to ContentField classes at runtime in patch_sdk()
 # Type annotations are set on the classes' __annotations__ for type checker support
@@ -34,6 +35,7 @@ PollingReturnType_co = TypeVar("PollingReturnType_co", covariant=True)
 __all__ = [
     "RecordMergePatchUpdate",
     "AnalyzeLROPoller",
+    "ProcessingLocation",
     "StringField",
     "IntegerField",
     "NumberField",
@@ -48,6 +50,21 @@ __all__ = [
 # RecordMergePatchUpdate is a TypeSpec artifact that wasn't generated
 # It's just an alias for dict[str, str] for model deployments
 RecordMergePatchUpdate = Dict[str, str]
+
+
+# SDK-FIX: Redefine ProcessingLocation enum with correct member name GLOBAL.
+# The typespec-python emitter generates "GLOBALEnum" because "global" is a Python reserved keyword.
+# This redefinition restores the expected GLOBAL name and is visible in APIView.
+# Must be kept in sync with the generated _enums.ProcessingLocation if new members are added.
+class ProcessingLocation(str, Enum, metaclass=CaseInsensitiveEnumMeta):
+    """The location where the data may be processed."""
+
+    GEOGRAPHY = "geography"
+    """Data may be processed in the same geography as the resource."""
+    DATA_ZONE = "dataZone"
+    """Data may be processed in the same data zone as the resource."""
+    GLOBAL = "global"
+    """Data may be processed in any Azure data center globally."""
 
 
 def _parse_operation_id(operation_location_header: str) -> str:
@@ -241,11 +258,6 @@ def patch_sdk():
     if not hasattr(ContentField, "__annotations__"):
         ContentField.__annotations__ = {}
     ContentField.__annotations__["value"] = Any
-
-    # SDK-FIX: Rename ProcessingLocation.GLOBALEnum to ProcessingLocation.GLOBAL
-    # This is a typespec-python emitter issue: "global" is a Python reserved keyword,
-    # so the emitter appends "Enum" to the member name. This patch restores the expected name.
-    ProcessingLocation.GLOBAL = ProcessingLocation.GLOBALEnum  # type: ignore[attr-defined]
 
     # SDK-FIX: Patch AudioVisualContent.__init__ to handle KeyFrameTimesMs casing inconsistency
     # The service returns "KeyFrameTimesMs" (capital K) but TypeSpec defines "keyFrameTimesMs" (lowercase k)
