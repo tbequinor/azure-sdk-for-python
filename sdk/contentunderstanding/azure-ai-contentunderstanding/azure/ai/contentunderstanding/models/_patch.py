@@ -10,7 +10,9 @@ Follow our quickstart for examples: https://aka.ms/azsdk/python/dpcodegen/python
 """
 
 import re
+from enum import Enum
 from typing import Any, Dict, List, Optional, TypeVar
+from azure.core import CaseInsensitiveEnumMeta
 from azure.core.polling import LROPoller, PollingMethod
 from ._models import (
     StringField,
@@ -24,8 +26,6 @@ from ._models import (
     JsonField,
     ContentField,
 )
-from enum import Enum
-from azure.core import CaseInsensitiveEnumMeta
 
 # Note: The .value property is added to ContentField classes at runtime in patch_sdk()
 # Type annotations are set on the classes' __annotations__ for type checker support
